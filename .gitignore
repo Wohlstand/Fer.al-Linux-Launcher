@@ -1,0 +1,7 @@
+build/
+.idea/
+__pycache__
+garbage/
+*.7z
+*.tar.*
+

@@ -1,0 +1,145 @@
+Running Fer.al for Windows on Linux!
+Feral Linux Kit v1.0.0
+
+--------------------------------------------------------------------------------
+Introduction
+--------------------------------------------------------------------------------
+This is a short manual how to get Fer.al game work on Linux. As of me writing
+this article, the game is officially available for 64-bit Windows and macOS
+systems. It's possible to run the game on many Linux distros through Wine,
+however it is a bit tricky.
+
+The game requires the Vulkan API to be supported by your video card.
+
+This manual is designed for the PlayOnLinux frontend for Wine. However, you can
+use a different frontend if you prefer. Just bear in mind that it may not work
+as intended.
+
+It is currently recommended to use Wine v4.16 as the game appears to work best
+with that version.
+
+This method uses a custom launcher programmed with Python because the official
+one doesn't work with Wine.
+
+
+--------------------------------------------------------------------------------
+Installing PlayOnLinux and Wine
+--------------------------------------------------------------------------------
+To install PlayOnLinux, make sure to follow the instructions for your preferred
+distro on the download page: https://www.playonlinux.com/en/download.html
+
+To install Wine v4.16, open PlayOnLinux, select Tools > Manage Wine versions,
+then select the list of Wine versions for the amd64 architecture. Scroll through
+the list until you find 4.16. Move 4.16 to the right side of the screen and
+click through the installation wizard. Put on a good song while you're waiting
+for it to install. This will take a few minutes.
+
+
+--------------------------------------------------------------------------------
+Making a "bottle"
+--------------------------------------------------------------------------------
+After installing PlayOnLinux and Wine v4.16, go into "Configure", and create a
+new drive without installing anything onto it. Make sure it's a 64-bit Windows
+installation and that Wine v4.16 is used. Name the drive "Fer.al".
+
+Once the drive has been created, go to the "Wine" tab of the drive's settings
+and open "Configure Wine". This will initialize Wine for the next step. From
+there, go to the "Miscellaneous" tab of the drive's settings, open the virtual
+drive's directory, open the "drive_c" of your Wine bottle and copy the "Feral"
+folder inside. Copy the whole content of "Feral-linux-kit" [THIS] archive
+into it.
+
+Open PlayOnLinux settings and choose the last tab. Choose "Open a Terminal".
+Then, go into the directory where the c_drive/Feral/DXVK directory and run the
+`./setup_dxvk.sh install` command. Wait until DXVK will be installed.
+
+Open `winecfg` and choose the libraries tab. Be sure that the necessary DirectX
+DLLs are in a list and marked as "native".
+
+!!Important note!!
+In the graphics block of Wine settings please enable the virtual desktop. This
+is required to escape a bug when you will lose a control over game.
+
+Then, I think, the bottle is ready.
+
+
+--------------------------------------------------------------------------------
+Initializing the game
+--------------------------------------------------------------------------------
+Now you need a python3 and some libraries in your system to get it wokring.
+No, script should run on Linux, not inside of Wine.
+
+You will need next python3 modules:
+- python3-urllib3
+- python3-requests
+Install them by a package manager (Ubuntu/Debian/Mint)
+```
+sudo apt install python3 python3-urllib3 python3-requests
+```
+
+Then, open a terminal inside of the bottle (by the same way as in the "Making a
+bottle" paragraph), change the directory into c_drive/Feral and run the next
+command:
+```
+./feralUpdate.py
+```
+It will download a game, please be patient, this is depend on your Internet
+connection speed. At the final it will fail to run a game with a PlayOnLinux.
+Don't worry, it's correct behavior, because it attempts to run a game that
+wasn't referred in PlayOnLinux yet. So, cd into the "build" directory at the
+same terminal and try to run the game by `wine Fer.al.exe` command. If game
+starts, close it, still need to finish the setup!
+
+Open PlayOnLinux settings and open the settings tab of Fer.al drive. Click the
+"Make a new shortcut ..." button. Please choose the "Fer.al.exe" from the list
+of files. Keep the name of executable be "Fer.al". Then, open the "Screen" tab.
+Please set next settings:
+- GLSL - disable
+- DirectDraw - OpenGL
+- Offscreen render mode - pbuffer
+- multisampling - Enabled
+- Strict rendering order - Disabled
+
+I think, now it should be ready. Open a new terminal and try to run the
+"feralUpdate.py" script again. Game should start. If game starts, the work is
+done. Please make a shortcut at your desktop to execute this script at this
+folder (please keep the terminal output being enabled, this is important to
+watch out for updating progress).
+
+
+Enjoy your game!
+
+
+
+--------------------------------------------------------------------------------
+Possible issues:
+--------------------------------------------------------------------------------
+- Black screen instead of 3D scene: (floating nicknames around the black only).
+That means, your Wine toolchain doesn't have DXVK being installed. You are
+required to install DXVK to get the 3D scene work. Unfortunately, direct use of
+DirectX10 and 11 is poor on Wine yet. Also you required to have a video card
+that supports Vulkan API and you required to install all necessary drivers to
+enable Vulkan support. Use "vulkan-utils" package and "vulkan-smoketest" to
+verify the work of Vulkan on your end.
+
+- Attempt to switch another window (by Alt+Tab) will cause a full lose of
+control over game (game will no longer respond mouse and keyboard actions).
+To resolve this, you should open `winecfg`, and enable the "virtual desktop".
+Use your local resolution to get a full-screen view.
+
+- On some systems and cases, login screen may be broken (confirmed on AMD RX 560
+video card)
+"getting kicked will just display a black loading screen and never go anywhere.
+I use Proton-GE, wine-staging 5.9 wouldn't connect.".
+This issue isn't known for me yet, I can't help here, yet.
+
+--------------------------------------------------------------------------------
+If something not working properly, please contact to me (Discord: Wohlstand#4881,
+admin@wohlnet.ru email).
+If possible, I'll try to help, but no guarantee I can help for some unknown yet
+issues.
+
+--------------------------------------------------------------------------------
+Author: Wohlstand
+Proofreader: Arctic Circle System
+

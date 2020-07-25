@@ -1,0 +1,7 @@
+This kit includes different components are licensed differently:
+----------------------------------------------------------------------
+All python scripts (*.py) here licensed under MIT license
+
+installer.gif is a part of official Fer.al and licensed with the same license as Feral game itself
+Feral icon (icon.ico and icon/*.png) licensed with the same license as Feral game itself
+
