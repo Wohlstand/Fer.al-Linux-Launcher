@@ -9,9 +9,28 @@ import os
 import sys
 import subprocess
 
+wine_path = '/home/vitaly/.PlayOnLinux/wine/linux-amd64/4.16'
+wine_prefix = '/home/vitaly/.PlayOnLinux/wineprefix/Fer.al'
+feral_dir = "/home/vitaly/.PlayOnLinux/wineprefix/Fer.al/drive_c/Feral/build/"
+
 
 def start_game():
-    subprocess.call(["/usr/share/playonlinux/playonlinux", "--run", "Fer.al"])
+    wine_env = os.environ.copy()
+    wine_env['WINEDIR'] = wine_path
+    wine_env['WINEPREFIX'] = wine_prefix
+    wine_env['PATH'] = "%s/bin:%s/drive_c/windows:%s" % (wine_env['WINEDIR'], wine_env['WINEPREFIX'], wine_env['PATH'])
+    if "LD_LIBRARY_PATH" in wine_env:
+        wine_env['LD_LIBRARY_PATH'] = "%s/lib64:%s" % (wine_env['WINEDIR'], wine_env['LD_LIBRARY_PATH'])
+    else:
+        wine_env['LD_LIBRARY_PATH'] = "%s/lib64" % wine_env['WINEDIR']
+    wine_env['WINEDLLPATH'] = "%s/lib64/wine" % wine_env['WINEDIR']
+    wine_env['WINELOADER'] = "%s/bin/wine64" % wine_env['WINEDIR']
+    wine_env['WINESERVER'] = "%s/bin/wine64" % wine_env['WINEDIR']
+
+    subprocess.Popen([wine_env['WINELOADER'],
+                      "%s/Fer.al.exe" % feral_dir],
+                     env=wine_env,
+                     cwd=feral_dir)
 
 
 config = configparser.ConfigParser()
