@@ -72,9 +72,11 @@ No, script should run on Linux, not inside of Wine.
 You will need next python3 modules:
 - python3-urllib3
 - python3-requests
+- tix-dev
+- python3-tk
 Install them by a package manager (Ubuntu/Debian/Mint)
 ```
-sudo apt install python3 python3-urllib3 python3-requests
+sudo apt install python3 tix-dev python3-tk python3-urllib3 python3-requests
 ```
 
 Then, open a terminal inside of the bottle (by the same way as in the "Making a
