@@ -9,7 +9,7 @@ import os
 import subprocess
 import json
 
-import AnimatedGif
+from lib import AnimatedGif
 import screeninfo
 import threading
 from tkinter import *
