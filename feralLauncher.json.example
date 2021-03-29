@@ -1,0 +1,5 @@
+{
+    "wine-path" : "~/.PlayOnLinux/wine/linux-amd64/4.16",
+    "wine-prefix" : "~/home/vitaly/.PlayOnLinux/wineprefix/Fer.al",
+    "feral-dir" : "~/.PlayOnLinux/wineprefix/Fer.al/drive_c/Feral"
+}

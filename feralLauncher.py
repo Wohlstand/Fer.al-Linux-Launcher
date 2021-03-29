@@ -6,8 +6,8 @@ import shutil
 import configparser
 import io
 import os
-import sys
 import subprocess
+import json
 
 import AnimatedGif
 import screeninfo
@@ -16,9 +16,18 @@ from tkinter import *
 from tkinter import messagebox
 
 global_ret_code = 0
-wine_path = '/home/vitaly/.PlayOnLinux/wine/linux-amd64/4.16'
-wine_prefix = '/home/vitaly/.PlayOnLinux/wineprefix/Fer.al'
-feral_dir = "/home/vitaly/.PlayOnLinux/wineprefix/Fer.al/drive_c/Feral/build/"
+latest_version_endpoint = "https://download.fer.al/win64/launcher.ini"
+
+with open('feralLauncher.json', "r") as read_file:
+    launcherSetup = json.load(read_file)
+
+if launcherSetup is None:
+    print("Fatal error: can't open the feralLauncher.json config!")
+    exit(1)
+
+wine_path = launcherSetup["wine-path"]
+wine_prefix = launcherSetup["wine-prefix"]
+feral_dir = launcherSetup["feral-dir"]
 
 
 def start_game():
@@ -35,9 +44,9 @@ def start_game():
     wine_env['WINESERVER'] = "%s/bin/wine64" % wine_env['WINEDIR']
 
     subprocess.Popen([wine_env['WINELOADER'],
-                      "%s/Fer.al.exe" % feral_dir],
+                      "%s/build/Fer.al.exe" % feral_dir],
                      env=wine_env,
-                     cwd=feral_dir)
+                     cwd=feral_dir + "/build")
 
     # subprocess.call(["/usr/share/playonlinux/playonlinux", "--run", "Fer.al"])
 
@@ -49,14 +58,11 @@ class Worker(threading.Thread):
 
     def run(self):
         global global_ret_code
-        config = configparser.ConfigParser()
-        config['version'] = {'latestVersionEndpoint': "none"}
-        config.read('config.ini')
-        version_check_url = config['version']['latestVersionEndpoint']
+        version_check_url = latest_version_endpoint
 
         launcher = configparser.ConfigParser()
         launcher['version'] = {'currentVersion': 'none'}
-        launcher.read('game.ini')
+        launcher.read(feral_dir + '/game.ini')
         current_game_ver = launcher['version']['currentVersion']
 
         if version_check_url == "none":
@@ -86,7 +92,7 @@ class Worker(threading.Thread):
             self.parent.close_window()
             return
 
-        if os.path.isdir("build") and latest_game_ver == current_game_ver:
+        if os.path.isdir(feral_dir + "/build") and latest_game_ver == current_game_ver:
             print("Game is up to date!")
             global_ret_code = 0
             self.parent.hide_window()
@@ -99,7 +105,7 @@ class Worker(threading.Thread):
 
         download_package_url = config["root"]["ApplicationDownloadUrl"]
 
-        file_name = "game_build.7z"
+        file_name = feral_dir + "/game_build.7z"
 
         if os.path.exists(file_name):
             os.remove(file_name)
@@ -135,18 +141,18 @@ class Worker(threading.Thread):
 
         self.parent.hide_progress()
 
-        if os.path.isdir("build"):
-            os.rename("build", "build-old")
+        if os.path.isdir(feral_dir + "/build"):
+            os.rename(feral_dir + "/build", feral_dir + "build-old")
 
         print("Extracting...")
-        os.system('7z x %s' % file_name)
+        subprocess.call(['7z', 'x', file_name], cwd=feral_dir)
 
         launcher['version']['currentVersion'] = latest_game_ver
-        with open('game.ini', 'w') as configfile:
+        with open(feral_dir + '/game.ini', 'w') as configfile:
             launcher.write(configfile)
 
         print("Removing backups...")
-        shutil.rmtree('build-old', ignore_errors=True)
+        shutil.rmtree(feral_dir + '/build-old', ignore_errors=True)
         if os.path.exists(file_name):
             os.remove(file_name)
 
