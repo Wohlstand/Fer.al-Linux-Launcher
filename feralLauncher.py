@@ -17,6 +17,8 @@ from tkinter import messagebox
 
 global_ret_code = 0
 latest_version_endpoint = "https://download.fer.al/win64/launcher.ini"
+# TODO: Implement the bootstrap of the Wine itself
+wine_url = "https://www.playonlinux.com/wine/binaries/phoenicis/upstream-linux-amd64/PlayOnLinux-wine-4.16-upstream-linux-amd64.tar.gz"
 
 with open('feralLauncher.json', "r") as read_file:
     launcherSetup = json.load(read_file)
