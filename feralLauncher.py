@@ -144,7 +144,7 @@ class Worker(threading.Thread):
         self.parent.hide_progress()
 
         if os.path.isdir(feral_dir + "/build"):
-            os.rename(feral_dir + "/build", feral_dir + "build-old")
+            os.rename(feral_dir + "/build", feral_dir + "/build-old")
 
         print("Extracting...")
         subprocess.call(['7z', 'x', file_name], cwd=feral_dir)
