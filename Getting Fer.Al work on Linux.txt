@@ -1,6 +1,25 @@
 Running Fer.al for Windows on Linux!
 Feral Linux Kit v1.0.0
 
+================================================================================
+================================================================================
+================================================================================
+                                !!!ATTENTION!!!
+--------------------------------------------------------------------------------
+This is an outdated manual written for the earliest version of this launcher and
+hadn't updated after it got been polished and tuned later. So, for the updated
+version of the launcher, there are some installation steps got been changed
+(for example, the game now can be run by launcher directly without paying any
+attention to the PlayOnLinux after the bottle got been prepared)
+--------------------------------------------------------------------------------
+    Also, since the game is no longer working after the 26'th of March 2022, the
+whole sense of this launcher has been lost. It was kept for historical purposes
+or could be used as a base for any different purposes.
+================================================================================
+================================================================================
+================================================================================
+
+
 --------------------------------------------------------------------------------
 Introduction
 --------------------------------------------------------------------------------
